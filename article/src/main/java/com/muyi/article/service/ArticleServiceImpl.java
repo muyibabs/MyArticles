@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ArticleServiceImpl implements ArticleService {
 
@@ -29,12 +30,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getAllArticles() {
-
+        List<com.muyi.model.article.entity.Article> all = articleDao.findAll();
+        if(!all.isEmpty())
+            return all.stream().map(article -> modelMapper.map(article, Article.class)).collect(Collectors.toList());
         return null;
     }
 
     @Override
     public void saveArticle(Article article) {
-
+        com.muyi.model.article.entity.Article article1 = modelMapper.map(article, com.muyi.model.article.entity.Article.class);
+        articleDao.save(article1);
     }
 }

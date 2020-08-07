@@ -1,5 +1,6 @@
 package com.muyi.user.controller;
 
+import com.muyi.model.exception.NotFoundException;
 import com.muyi.model.user.User;
 import com.muyi.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable(name = "id") Integer userId){
-        return userService.getUserById(userId);
+        User user = userService.getUserById(userId);
+        if(user==null)
+            throw new NotFoundException("101", "User with id: " + userId + " not found");
+        return user;
     }
 
     @GetMapping

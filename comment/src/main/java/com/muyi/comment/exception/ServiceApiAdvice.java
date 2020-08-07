@@ -1,4 +1,4 @@
-package com.muyi.user.exception;
+package com.muyi.comment.exception;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,9 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-@ControllerAdvice(annotations = RestController.class, basePackages = "com.muyi.user.controller")
+@ControllerAdvice(annotations = RestController.class, basePackages = "com.muyi.comment.controller")
 @ResponseBody
 public class ServiceApiAdvice {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceApiAdvice.class);

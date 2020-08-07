@@ -2,6 +2,7 @@ package com.muyi.article.controller;
 
 import com.muyi.article.service.ArticleService;
 import com.muyi.model.article.Article;
+import com.muyi.model.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,10 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public Article getArticleById(@PathVariable(name = "id") Integer artcId) {
-        return articleService.getArticleById(artcId);
+        Article article = articleService.getArticleById(artcId);
+        if(article==null)
+            throw new NotFoundException("101", "Article with id: "+ artcId + " not found");
+        return article;
     }
 
     @GetMapping

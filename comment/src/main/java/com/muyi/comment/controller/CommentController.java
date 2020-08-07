@@ -2,6 +2,7 @@ package com.muyi.comment.controller;
 
 import com.muyi.comment.service.CommentService;
 import com.muyi.model.comment.Comment;
+import com.muyi.model.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,10 @@ public class CommentController {
 
     @GetMapping("/{cId}")
     public Comment getCommentById(@PathVariable(name = "cId") Integer id){
-        return commentService.getCommentById(id);
+        Comment comment = commentService.getCommentById(id);
+        if(comment==null)
+            throw new NotFoundException("101", "Comment not found");
+        return comment;
     }
 
     @GetMapping

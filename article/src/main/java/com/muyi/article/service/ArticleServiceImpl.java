@@ -4,11 +4,13 @@ import com.muyi.article.dao.ArticleDao;
 import com.muyi.model.article.Article;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class ArticleServiceImpl implements ArticleService {
 
     private ModelMapper modelMapper;
@@ -24,7 +26,7 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getArticleById(Integer id) {
         Optional<com.muyi.model.article.entity.Article> article = articleDao.findById(id);
         if(article.isPresent())
-            return modelMapper.map(article, Article.class);
+            return modelMapper.map(article.get(), Article.class);
         return null;
     }
 

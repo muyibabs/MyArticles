@@ -1,11 +1,32 @@
 package com.muyi.model.user;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
+@ApiModel(description = "Class representing a user")
 public class User {
 
     private Integer userId;
+
+    @ApiModelProperty(example = "John", position = 1)
+    @NotBlank(message = "Firstname cannot be blank")
     private String firstName;
+
+    @ApiModelProperty(example = "Doe", position = 2)
+    @NotBlank(message = "Lastname cannot be blank")
     private String lastName;
+
+    @ApiModelProperty(example = "20", position = 3)
+    @Max(value = 200, message = "Age cannot be more than 200")
+    @Positive(message = "Age cannot be negative")
     private Integer age;
+
+    @ApiModelProperty(example = "female", position = 4)
+    @NotBlank(message = "Sex cannot be blank")
     private String sex;
 
     public User() {

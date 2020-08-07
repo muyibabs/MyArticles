@@ -6,6 +6,8 @@ import com.muyi.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable(name = "id") Integer userId){
+        System.out.println("======================== inside getUserById()");
         User user = userService.getUserById(userId);
         if(user==null)
             throw new NotFoundException("101", "User with id: " + userId + " not found");
@@ -33,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public void createUser(@RequestBody User user){
+    public void createUser(@RequestBody @Valid User user){
         userService.saveUser(user);
     }
 

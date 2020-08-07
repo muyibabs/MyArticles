@@ -6,6 +6,7 @@ import com.muyi.model.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public void saveComment(@RequestBody Comment comment){
+    public void saveComment(@RequestBody @Valid Comment comment){
         commentService.saveComment(comment);
     }
 }

@@ -43,4 +43,10 @@ public class ArticleServiceImpl implements ArticleService {
         com.muyi.model.article.entity.Article article1 = modelMapper.map(article, com.muyi.model.article.entity.Article.class);
         articleDao.save(article1);
     }
+
+    @Override
+    public void deleteArticle(Article article) {
+        com.muyi.model.article.entity.Article article1 = modelMapper.map(article, com.muyi.model.article.entity.Article.class);
+        articleDao.delete(article1);
+    }
 }

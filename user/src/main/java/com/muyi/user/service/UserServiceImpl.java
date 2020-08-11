@@ -44,4 +44,10 @@ public class UserServiceImpl implements UserService {
         com.muyi.model.user.entity.User eUser = modelMapper.map(user, com.muyi.model.user.entity.User.class);
         userDao.save(eUser);
     }
+
+    @Override
+    public void deleteUser(User user) {
+        com.muyi.model.user.entity.User user1 = modelMapper.map(user, com.muyi.model.user.entity.User.class);
+        userDao.delete(user1);
+    }
 }

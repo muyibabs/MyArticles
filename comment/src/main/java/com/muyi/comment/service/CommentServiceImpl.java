@@ -44,4 +44,10 @@ public class CommentServiceImpl implements CommentService {
         commentDao.save(comment1);
 
     }
+
+    @Override
+    public void deleteComment(Comment comment) {
+        com.muyi.model.comment.entity.Comment comment1 = modelMapper.map(comment, com.muyi.model.comment.entity.Comment.class);
+        commentDao.delete(comment1);
+    }
 }

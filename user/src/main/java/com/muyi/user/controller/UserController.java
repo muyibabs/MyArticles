@@ -1,5 +1,7 @@
 package com.muyi.user.controller;
 
+import com.muyi.model.exception.BadRequestException;
+import com.muyi.model.exception.ConflictException;
 import com.muyi.model.exception.NotFoundException;
 import com.muyi.model.user.User;
 import com.muyi.user.service.UserService;
@@ -7,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,8 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable(name = "id") Integer userId){
         System.out.println("======================== inside getUserById()");
+        if(userId==null || userId<1)
+            throw new BadRequestException("100","Invalid id");
         User user = userService.getUserById(userId);
         if(user==null)
             throw new NotFoundException("101", "User with id: " + userId + " not found");
@@ -37,11 +40,27 @@ public class UserController {
 
     @PostMapping
     public void createUser(@RequestBody @Valid User user){
+        User user1 = userService.getUserById(user.getUserId());
+        if(user1!=null)
+            throw new ConflictException("100", "User already exist");
         userService.saveUser(user);
     }
 
     @PutMapping
     public void updateUser(@RequestBody User user){
+        User user1 = userService.getUserById(user.getUserId());
+        if(user1==null)
+            throw new NotFoundException("100", "User does not exist");
         userService.saveUser(user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable(name = "id") Integer userId){
+        if(userId==null || userId<1)
+            throw new BadRequestException("100", "Invalid User id");
+        User user = userService.getUserById(userId);
+        if(user==null)
+            throw new NotFoundException("100", "User does not exist");
+        userService.deleteUser(user);
     }
 }

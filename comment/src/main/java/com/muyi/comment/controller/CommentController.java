@@ -2,6 +2,8 @@ package com.muyi.comment.controller;
 
 import com.muyi.comment.service.CommentService;
 import com.muyi.model.comment.Comment;
+import com.muyi.model.exception.BadRequestException;
+import com.muyi.model.exception.ConflictException;
 import com.muyi.model.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,8 @@ public class CommentController {
 
     @GetMapping("/{cId}")
     public Comment getCommentById(@PathVariable(name = "cId") Integer id){
+        if(id==null || id<1)
+            throw new BadRequestException("100", "Invalid comment id");
         Comment comment = commentService.getCommentById(id);
         if(comment==null)
             throw new NotFoundException("101", "Comment not found");
@@ -35,6 +39,23 @@ public class CommentController {
 
     @PostMapping
     public void saveComment(@RequestBody @Valid Comment comment){
+        Comment comment1 = commentService.getCommentById(comment.getCommentId());
+        if(comment1 != null)
+            throw new ConflictException("100", "Comment already exist");
         commentService.saveComment(comment);
+    }
+
+    @PutMapping
+    public void updateComment(@RequestBody @Valid Comment comment){
+        Comment comment1 = commentService.getCommentById(comment.getCommentId());
+        if(comment1 == null)
+            throw new NotFoundException("100", "Comment does not exist");
+        commentService.saveComment(comment);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteComment(@PathVariable Integer id){
+        if(id==null || id<1)
+            throw new BadRequestException("100", "");
     }
 }

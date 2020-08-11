@@ -9,4 +9,5 @@ public interface ArticleService {
     Article getArticleById(Integer id);
     List<Article> getAllArticles();
     void saveArticle(Article article);
+    void deleteArticle(Article article);
 }

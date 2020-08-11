@@ -11,4 +11,6 @@ public interface CommentService {
     List<Comment> getAllComments();
 
     void saveComment(Comment comment);
+
+    void deleteComment(Comment comment);
 }

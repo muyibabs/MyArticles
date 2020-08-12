@@ -13,4 +13,6 @@ public interface CommentService {
     void saveComment(Comment comment);
 
     void deleteComment(Comment comment);
+
+    List<Comment> getCommentsByUserId(Integer userId);
 }

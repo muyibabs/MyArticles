@@ -50,4 +50,12 @@ public class CommentServiceImpl implements CommentService {
         com.muyi.model.comment.entity.Comment comment1 = modelMapper.map(comment, com.muyi.model.comment.entity.Comment.class);
         commentDao.delete(comment1);
     }
+
+    @Override
+    public List<Comment> getCommentsByUserId(Integer userId) {
+        List<com.muyi.model.comment.entity.Comment> comments = commentDao.findByUserId(userId);
+        if(!comments.isEmpty())
+            return comments.stream().map(comment -> modelMapper.map(comment, Comment.class)).collect(Collectors.toList());
+        return null;
+    }
 }

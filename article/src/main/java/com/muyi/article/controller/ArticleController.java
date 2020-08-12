@@ -6,6 +6,7 @@ import com.muyi.model.exception.BadRequestException;
 import com.muyi.model.exception.ConflictException;
 import com.muyi.model.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,22 +41,25 @@ public class ArticleController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void createArticle(@RequestBody @Valid Article article) {
-        Article article1 = articleService.getArticleById(article.getArticleId());
-        if(article1!=null)
-            throw new NotFoundException("404", "Article not found");
+//        Article article1 = articleService.getArticleById(article.getArticleId());
+//        if(article1!=null)
+//            throw new NotFoundException("404", "Article not found");
         articleService.saveArticle(article);
     }
 
     @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateArticle(@RequestBody @Valid Article article) {
-        Article article1 = articleService.getArticleById(article.getArticleId());
-        if(article1==null)
-            throw new ConflictException("404", "Article already exist");
+//        Article article1 = articleService.getArticleById(article.getArticleId());
+//        if(article1==null)
+//            throw new ConflictException("404", "Article already exist");
         articleService.saveArticle(article);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteArticle(@PathVariable Integer id){
         if(id==null || id<1)
             throw new BadRequestException("100", "Invalid id");
@@ -63,5 +67,12 @@ public class ArticleController {
         if(article==null)
             throw new NotFoundException("404","Article does not exist");
         articleService.deleteArticle(article);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Article> findArticlesByUser(@PathVariable Integer userId){
+        if(userId == null | userId<1)
+            throw new BadRequestException("100", "Invalid user id");
+        return articleService.getAllArticlesByUser(userId);
     }
 }

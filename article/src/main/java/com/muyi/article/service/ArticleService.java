@@ -10,4 +10,5 @@ public interface ArticleService {
     List<Article> getAllArticles();
     void saveArticle(Article article);
     void deleteArticle(Article article);
+    List<Article> getAllArticlesByUser(Integer uId);
 }

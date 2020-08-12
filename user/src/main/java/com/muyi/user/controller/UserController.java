@@ -6,6 +6,7 @@ import com.muyi.model.exception.NotFoundException;
 import com.muyi.model.user.User;
 import com.muyi.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,14 +40,16 @@ public class UserController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody @Valid User user){
-        User user1 = userService.getUserById(user.getUserId());
-        if(user1!=null)
-            throw new ConflictException("100", "User already exist");
+//        User user1 = userService.getUserById(user.getUserId());
+//        if(user1!=null)
+//            throw new ConflictException("100", "User already exist");
         userService.saveUser(user);
     }
 
     @PutMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateUser(@RequestBody User user){
         User user1 = userService.getUserById(user.getUserId());
         if(user1==null)
@@ -55,6 +58,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable(name = "id") Integer userId){
         if(userId==null || userId<1)
             throw new BadRequestException("100", "Invalid User id");

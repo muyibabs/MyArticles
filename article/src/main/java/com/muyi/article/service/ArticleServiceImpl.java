@@ -49,4 +49,10 @@ public class ArticleServiceImpl implements ArticleService {
         com.muyi.model.article.entity.Article article1 = modelMapper.map(article, com.muyi.model.article.entity.Article.class);
         articleDao.delete(article1);
     }
+
+    @Override
+    public List<Article> getAllArticlesByUser(Integer userId) {
+        List<com.muyi.model.article.entity.Article> articles = articleDao.findByCreatorUser(userId);
+        return articles.stream().map(article -> modelMapper.map(article, Article.class)).collect(Collectors.toList());
+    }
 }

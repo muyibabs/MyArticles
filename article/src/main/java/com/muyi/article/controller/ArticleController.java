@@ -1,13 +1,18 @@
 package com.muyi.article.controller;
 
+import com.muyi.article.model.ArticleResponse;
+import com.muyi.article.model.DetailedArticleResponseImpl;
+import com.muyi.article.model.SimpleArticleResponseImpl;
 import com.muyi.article.service.ArticleService;
 import com.muyi.model.article.Article;
 import com.muyi.model.exception.BadRequestException;
 import com.muyi.model.exception.ConflictException;
 import com.muyi.model.exception.NotFoundException;
+import com.muyi.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,21 +22,32 @@ import java.util.List;
 public class ArticleController {
 
     ArticleService articleService;
+    RestTemplate restTemplate;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, RestTemplate restTemplate) {
         this.articleService = articleService;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/{id}")
-    public Article getArticleById(@PathVariable(name = "id") Integer artcId) {
+    public ArticleResponse getArticleById(@PathVariable(name = "id") Integer artcId, @RequestParam(required = false) String load) {
         if(artcId==null || artcId<1)
             throw new BadRequestException("100", "Invalid id");
 
         Article article = articleService.getArticleById(artcId);
         if(article==null)
             throw new NotFoundException("101", "Article with id: "+ artcId + " not found");
-        return article;
+
+        if(load==null) {
+            return new SimpleArticleResponseImpl(article);
+        }else{
+            //Fetch the user record too
+            System.out.println("----------------------------------------1");
+            Object user = restTemplate.getForObject("http://user/api/v1/users/"+article.getCreatorUser(), Object.class);
+            System.out.println("----------------------------------------3");
+            return new DetailedArticleResponseImpl(article, user);
+        }
     }
 
     @GetMapping
